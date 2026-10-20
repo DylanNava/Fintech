@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wallet Fincard — Sitio en mantenimiento</title>
+<meta name="description" content="Wallet Fincard está en mantenimiento. Volvemos pronto." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ============ TOKENS — Esquema claro tipo Hallmark "Quiet" ============ */
+  :root{
+    /* Fondos */
+    --bg:#FFFFFF;
+    --bg-alt:#F7F7F9;
+    --surface:#FFFFFF;
+    --surface-soft:#F2F2F7;
+
+    /* Texto */
+    --text:#1D1D1F;
+    --muted:#6E6E76;
+    --muted-soft:#8E8E98;
+
+    /* Acento principal: azul frío */
+    --accent:#0A66FF;
+    --accent-soft:#E8F0FF;
+
+    /* Acento secundario: coral para el estado */
+    --coral:#FF6B6B;
+    --coral-soft:#FFF0F0;
+
+    /* Bordes y sombras */
+    --border:#E5E5EA;
+    --border-soft:#EFEFF4;
+    --shadow-soft:0 20px 50px -30px rgba(0,0,0,.12);
+    --shadow-card:0 30px 80px -40px rgba(0,0,0,.18);
+
+    --radius:24px;
+  }
+
+  /* ============ BASE ============ */
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    min-height:100dvh;
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:clamp(28px,6vw,64px) 20px;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* Fondo con un halo azul muy tenue, sin gradientes fuertes */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background:
+      radial-gradient(900px 500px at 80% -10%,rgba(10,102,255,.06),transparent 60%),
+      radial-gradient(700px 400px at 10% 110%,rgba(255,107,107,.04),transparent 60%);
+  }
+
+  ::selection{background:var(--accent-soft);color:var(--accent)}
+
+  /* ============ LAYOUT ============ */
+  .stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:560px;
+  }
+
+  /* ============ MARCA ============ */
+  .brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:clamp(26px,4vw,38px);
+  }
+
+  .brand__mark{
+    width:48px;
+    height:48px;
+    flex:none;
+    border-radius:15px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    display:grid;
+    place-items:center;
+    color:var(--accent);
+    box-shadow:0 8px 20px -12px rgba(10,102,255,.25);
+  }
+
+  .brand__mark svg{
+    width:26px;
+    height:26px;
+  }
+
+  .brand__name{
+    font-family:'Sora',system-ui,sans-serif;
+    font-size:clamp(1.35rem,2.6vw,1.55rem);
+    font-weight:800;
+    letter-spacing:-.035em;
+    line-height:1;
+    white-space:nowrap;
+    color:var(--text);
+  }
+
+  .brand__name span{
+    color:var(--accent);
+  }
+
+  /* ============ TARJETA DECORATIVA ============ */
+  .deco-card{
+    position:absolute;
+    top:-46px;
+    right:-52px;
+    width:240px;
+    height:150px;
+    border-radius:20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-card);
+    transform:rotate(9deg);
+    opacity:.9;
+    z-index:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:18px 20px;
+    pointer-events:none;
+  }
+
+  .deco-chip{
+    width:32px;
+    height:23px;
+    border-radius:6px;
+    background:linear-gradient(135deg,#E8D9B5,#C9A24F);
+    opacity:.9;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+  }
+
+  .deco-number{
+    font-family:'Sora',monospace;
+    font-size:.86rem;
+    letter-spacing:.22em;
+    color:var(--muted-soft);
+  }
+
+  .deco-brand{
+    font-family:'Sora',sans-serif;
+    font-size:.62rem;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--muted-soft);
+  }
+
+  /* ============ PANEL ============ */
+  .panel{
+    position:relative;
+    z-index:1;
+    border-radius:var(--radius);
+    padding:clamp(34px,6vw,56px);
+    text-align:center;
+    background:var(--surface);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-soft);
+  }
+
+  /* Línea superior de acento muy fina */
+  .panel::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:64px;
+    height:3px;
+    border-radius:0 0 4px 4px;
+    background:var(--accent);
+    opacity:.85;
+  }
+
+  /* ============ ESTADO ============ */
+  .status{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:7px 15px;
+    border-radius:999px;
+    background:var(--coral-soft);
+    border:1px solid rgba(255,107,107,.28);
+    color:var(--coral);
+    font-size:.76rem;
+    font-weight:600;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    margin-bottom:24px;
+  }
+
+  .status__dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--coral);
+    flex:none;
+    animation:pulse 2.2s ease-out infinite;
+  }
+
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,107,107,.4)}
+    70%{box-shadow:0 0 0 8px rgba(255,107,107,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,107,107,0)}
+  }
+
+  /* ============ TEXTO ============ */
+  h1{
+    font-family:'Sora',system-ui,sans-serif;
+    font-size:clamp(1.85rem,4.6vw,2.55rem);
+    font-weight:800;
+    letter-spacing:-.035em;
+    line-height:1.14;
+    margin:0 0 18px;
+    color:var(--text);
+  }
+
+  h1 span{
+    color:var(--accent);
+  }
+
+  .lead{
+    margin:0 auto;
+    max-width:40ch;
+    color:var(--muted);
+    font-size:clamp(.94rem,1.4vw,1.02rem);
+  }
+
+  /* ============ META ============ */
+  .meta{
+    margin-top:32px;
+    padding-top:26px;
+    border-top:1px solid var(--border-soft);
+    display:grid;
+    gap:14px;
+    text-align:left;
+  }
+
+  .meta__row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:20px;
+    font-size:.88rem;
+  }
+
+  .meta__label{
+    color:var(--muted);
+    font-size:.74rem;
+    font-weight:600;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    flex:none;
+  }
+
+  .meta__value{
+    color:var(--text);
+    font-weight:500;
+    text-align:right;
+    word-break:break-word;
+  }
+
+  .meta__value--muted{color:var(--muted)}
+
+  /* ============ PIE ============ */
+  .foot{
+    margin-top:26px;
+    font-size:.76rem;
+    color:var(--muted-soft);
+    letter-spacing:.02em;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:720px){
+    .deco-card{display:none}
+    .brand{gap:12px}
+    .brand__mark{width:44px;height:44px;border-radius:14px}
+    .brand__mark svg{width:24px;height:24px}
+  }
+
+  @media (max-width:440px){
+    .meta__row{flex-direction:column;align-items:flex-start;gap:4px}
+    .meta__value{text-align:left}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+
+    <!-- Tarjeta decorativa de fondo -->
+    <div class="deco-card" aria-hidden="true">
+      <span class="deco-chip"></span>
+      <span class="deco-number">•••• 4287</span>
+      <span class="deco-brand">Wallet Fincard</span>
+    </div>
+
+    <main class="panel" role="main" aria-labelledby="maintenance-title">
+
+      <!-- Marca -->
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.6" y="8.6" width="13.8" height="9.8" rx="2.6" opacity=".35"/>
+            <rect x="7.6" y="5.2" width="13.8" height="9.8" rx="2.6"/>
+            <path d="M7.6 8.6h13.8"/>
+            <path d="M10.8 11.9h3.2"/>
+          </svg>
+        </span>
+        <span class="brand__name">Wallet <span>Fincard</span></span>
+      </div>
+
+      <!-- Estado -->
+      <span class="status">
+        <span class="status__dot" aria-hidden="true"></span>
+        Mantenimiento programado
+      </span>
+
+      <h1 id="maintenance-title">
+        Estamos afinando<br />
+        <span>tu cartera digital</span>
+      </h1>
+
+      <p class="lead">
+        Wallet Fincard se encuentra temporalmente fuera de línea mientras realizamos
+        tareas de mantenimiento. Volvemos pronto con una experiencia más rápida y segura.
+      </p>
+
+      <div class="meta">
+        <div class="meta__row">
+          <span class="meta__label">Servicio</span>
+          <span class="meta__value">Wallet y tarjetas digitales</span>
+        </div>
+        <div class="meta__row">
+          <span class="meta__label">Estado</span>
+          <span class="meta__value">En mantenimiento</span>
+        </div>
+        <div class="meta__row">
+          <span class="meta__label">Contacto</span>
+          <span class="meta__value">soporte@fintec.com.mx</span>
+        </div>
+        <div class="meta__row">
+          <span class="meta__label">Regreso</span>
+          <span class="meta__value meta__value--muted">Pronto</span>
+        </div>
+      </div>
+
+      <p class="foot">© 2026 Wallet Fincard · Gracias por tu paciencia</p>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
